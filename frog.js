@@ -2,36 +2,43 @@ var wx = 900;
 var hy = 600;
 var ny = 0.0;
 var rx, ry, rfb, rfc;
-var circle = [];
-var square = [];
-var morph = [];
+var circle = [], square = [], morph = [];
 var state = false;
 var flies = [];
 
+var x = [], y = [], angle = [];
+var segLength = 3;
+var targetX, targetY;
+var numSegments = 106;
+
+for (var i = 0; i < numSegments; i++) {
+  x[i] = y[i] = angle[i] = 0;
+}
 
 function setup() {
   createCanvas(wx,hy);
-  noStroke();
   rx = random(0,wx);
   ry = random(200,hy/2);
   rfb = random(190,290);
   rfc = random(90,160);
   morphSetup();
-  for(var i = 0; i < 5; i++){
-    flies[i] = new fly();
-  }
+  for(var i = 0; i < 5; i++){ flies[i] = new fly();}
+  //tongue placement
+  x[x.length-1] = width/2; // Set base x-coordinate
+  y[x.length-1] = height/2 - 75;  // Set base y-coordinate
 }
 
 function draw(){
   background(210, 226, 247);
+  noStroke();
   soil();
   waterMovement(100,200);
   randomLilies(rx,ry);
   lily(wx/2,hy/2 + 150);
-  for(var i = 0; i < 5; i++){
-    flies[i].display();
-  }
+  for(var i = 0; i < 5; i++){ flies[i].display();}
   moveEm(flies);
+  tongue();
+
 }
 
 //based on Noise wave example: https://p5js.org/examples/math-noise-wave.html
@@ -119,7 +126,14 @@ function frog(cx,cy){
   fill(0);
   ellipse(cx + rfb/4 + 10, cy - 260, rfb/8, rfb/6); //pupil
 
+  //nostrils
+  stroke(69, rfc - 50, 19);
+  strokeWeight(2);
+  line(cx - rfb/20, cy - 255, cx - rfb/15, cy - 250);
+  line(cx + rfb/20, cy - 255, cx + rfb/15, cy - 250);
+
   morphDraw(cx,cy - 120);
+  tongue();
 }
 
 function randomLilies(rx,ry){
@@ -156,31 +170,28 @@ function morphSetup(){
 
 function morphDraw(pX,pY){
   fill(135, 178, 78);
+  noStroke();
   // We will keep how far the vertices are from their target
   var totalDistance = 0;
 
   // Look at each vertex
   for (var i = 0; i < circle.length; i++) {
     var v1;
-    // Are we lerping to the circle or square?
+    // check if lerping to the circle or square
     if (state) { v1 = circle[i];}
     else { v1 = square[i];}
-    // Get the vertex we will draw
-    var v2 = morph[i];
-    // Lerp to the target
-    v2.lerp(v1, 0.1);
-    // Check how far we are from target
-    totalDistance += p5.Vector.dist(v1, v2);
+    var v2 = morph[i];                           // Get the vertex we will draw
+    v2.lerp(v1, 0.1);                            // Lerp to the target
+    totalDistance += p5.Vector.dist(v1, v2);     // Check how far we are from target
   }
 
-  // If all the vertices are close, switch shape
-  if (totalDistance < 0.1) { state = !state;}
-  // Draw relative to center
-  translate(pX,pY);
-  // Draw a polygon that makes up all the vertices
-  beginShape();
-  morph.forEach(v => { vertex(v.x, v.y);});
+  if (totalDistance < 0.1) { state = !state;}    // If all the vertices are close, switch shape
+  translate(pX,pY);                              // Draw relative to center
+  beginShape();                                  // Draw a polygon that makes up all the vertices
+
+  morph.forEach(v => { vertex(v.x, v.y);} );
   endShape(CLOSE);
+  translate(-pX,-pY);
 }
 
 function moveEm(flies){
@@ -193,10 +204,9 @@ function fly() {
   this.x = random(10,wx);
   this.y = random(10,hy);
   this.diameter = random(20, 40);
-  this.speed = 4;
 
   this.move = function() {
-    var speed = random(-this.speed, this.speed);
+    var speed = random(-4,4);
     this.x += speed;
     this.y += speed;
   };
@@ -209,4 +219,41 @@ function fly() {
     ellipse(this.x - 5, this.y, this.diameter, this.diameter - 5);
 
   };
+}
+
+//borrows code from reach example: https://p5js.org/examples/interaction-reach-2.html
+function tongue(){
+  stroke(255,182,193);
+  strokeWeight(10);
+  reachSegment(0, mouseX, mouseY);
+  for(var i=1; i<numSegments; i++) {
+    reachSegment(i, targetX, targetY);
+  }
+  for(var j=x.length-1; j>=1; j--) {
+    positionSegment(j, j-1);
+  }
+  for(var k=0; k<x.length; k++) {
+    segment(x[k], y[k], angle[k]);
+  }
+  noStroke();
+}
+
+function positionSegment(a, b) {
+  x[b] = x[a] + cos(angle[a]) * segLength;
+  y[b] = y[a] + sin(angle[a]) * segLength;
+}
+
+function reachSegment(i, xin, yin) {
+  var dx = xin - x[i];
+  var dy = yin - y[i];
+  angle[i] = atan2(dy, dx);
+  targetX = xin - cos(angle[i]) * segLength;
+  targetY = yin - sin(angle[i]) * segLength;
+}
+
+function segment(x, y, a) {
+  push();
+  translate(x, y);
+  line(0, 0, segLength, 0);
+  pop();
 }
