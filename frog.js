@@ -1,14 +1,20 @@
-var wx = 800;
+var wx = 900;
 var hy = 600;
 var ny = 0.0;
-var rx;
-var ry;
+var rx, ry, rfb;
+var circle = [];
+var square = [];
+var morph = [];
+var state = false;
+
 
 function setup() {
   createCanvas(wx,hy);
   noStroke();
   rx = random(0,wx);
   ry = random(200,hy/2);
+  rfb = random(190,290);
+  morphSetup();
 }
 
 function draw(){
@@ -57,7 +63,35 @@ function waterMovement(h1,h2){
 function lily(cx,cy){
   fill(127, 160, 115);
   ellipse(cx, cy, 600,150);
-  waterMovement(cy,cy + 150);
+  waterMovement(cy, cy + 100);
+  frog(cx,cy);
+}
+
+function frog(cx,cy){
+  //outer belly
+  fill(89, 127, 39);
+  ellipse(cx, cy - 120, rfb, 220);
+  //inner belly
+  fill(135, 178, 78);
+  ellipse(cx, cy - 110, rfb - 40, 180);
+
+  //head
+  fill(89, 127, 39);
+  ellipse(cx, cy - 220, 170, 100);
+
+  //left eye
+  fill(89, 127, 39);
+  ellipse(cx - 40, cy - 260, 60, 55); //lid
+  fill(232, 231, 185);
+  ellipse(cx - 55, cy - 260, 60, 55); //ball
+
+  //right eye
+  fill(89, 127, 39);
+  ellipse(cx + 40, cy - 260, 60, 55); //lid
+  fill(232, 231, 185);
+  ellipse(cx + 55, cy - 260, 60, 55); //ball
+
+  morphDraw(cx,cy - 120);
 }
 
 function randomLilies(rx,ry){
@@ -70,4 +104,55 @@ function randomLilies(rx,ry){
   ellipse(rx - 300, ry + 50, ry2 + 400,ry2 + 5);
   fill(97, 140, 85);
   ellipse(rx - 600, ry + 60, ry2 + 450,ry2);
+}
+// using code from p5 morph example: https://p5js.org/examples/motion-morph.html
+function morphSetup(){
+  // Create a circle using vectors pointing from center
+  for (var angle = 0; angle < 360; angle += 9) {
+    var v = p5.Vector.fromAngle(radians(angle - 135));
+    v.mult(100);
+    circle.push(v);
+    // fill out morph ArrayList with blank PVectors
+    morph.push(createVector());
+  }
+  // Top of square
+  for (var x = -50; x < 50; x += 10) { square.push(createVector(x, -50));}
+  // Right side
+  for (var y = -50; y < 50; y += 10) { square.push(createVector(50, y));}
+  // Bottom
+  for (var x = 50; x > -50; x -= 10) { square.push(createVector(x, 50));}
+  // Left side
+  for (var y = 50; y > -50; y -= 10) { square.push(createVector(-50, y));}
+}
+
+function morphDraw(pX,pY){
+  fill(135, 178, 78);
+  // We will keep how far the vertices are from their target
+  var totalDistance = 0;
+
+  // Look at each vertex
+  for (var i = 0; i < circle.length; i++) {
+    var v1;
+    // Are we lerping to the circle or square?
+    if (state) {
+      v1 = circle[i];
+    } else {
+      v1 = square[i];
+    }
+    // Get the vertex we will draw
+    var v2 = morph[i];
+    // Lerp to the target
+    v2.lerp(v1, 0.1);
+    // Check how far we are from target
+    totalDistance += p5.Vector.dist(v1, v2);
+  }
+
+  // If all the vertices are close, switch shape
+  if (totalDistance < 0.1) { state = !state;}
+  // Draw relative to center
+  translate(pX,pY);
+  // Draw a polygon that makes up all the vertices
+  beginShape();
+  morph.forEach(v => { vertex(v.x, v.y);});
+  endShape(CLOSE);
 }
