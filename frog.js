@@ -14,7 +14,7 @@ function setup() {
   rx = random(0,wx);
   ry = random(200,hy/2);
   rfb = random(190,290);
-  rfc = random (90,160);
+  rfc = random(90,160);
   morphSetup();
 }
 
@@ -97,15 +97,19 @@ function frog(cx,cy){
 
   //left eye
   fill(89, rfc, 39);
-  ellipse(cx - 40, cy - 260, 60, 55); //lid
-  fill(232, 231, 185);
-  ellipse(cx - 55, cy - 260, 60, 55); //ball
+  ellipse(cx - rfb/5, cy - 260, 60, 55); //lid
+  fill(ry, ry, ry - 100);
+  ellipse(cx - rfb/4, cy - 260, 60, 55); //ball
+  fill(0);
+  ellipse(cx - rfb/4 - 10, cy - 260, rfb/8, rfb/6); //pupil
 
   //right eye
   fill(89, rfc, 39);
-  ellipse(cx + 40, cy - 260, 60, 55); //lid
-  fill(232, 231, 185);
-  ellipse(cx + 55, cy - 260, 60, 55); //ball
+  ellipse(cx + rfb/5, cy - 260, 60, 55); //lid
+  fill(ry, ry, ry - 100);
+  ellipse(cx + rfb/4, cy - 260, 60, 55); //ball
+  fill(0);
+  ellipse(cx + rfb/4 + 10, cy - 260, rfb/8, rfb/6); //pupil
 
   morphDraw(cx,cy - 120);
 }
