@@ -6,6 +6,7 @@ var circle = [];
 var square = [];
 var morph = [];
 var state = false;
+var flies = [];
 
 
 function setup() {
@@ -16,6 +17,9 @@ function setup() {
   rfb = random(190,290);
   rfc = random(90,160);
   morphSetup();
+  for(var i = 0; i < 5; i++){
+    flies[i] = new fly();
+  }
 }
 
 function draw(){
@@ -24,6 +28,10 @@ function draw(){
   waterMovement(100,200);
   randomLilies(rx,ry);
   lily(wx/2,hy/2 + 150);
+  for(var i = 0; i < 5; i++){
+    flies[i].display();
+  }
+  moveEm(flies);
 }
 
 //based on Noise wave example: https://p5js.org/examples/math-noise-wave.html
@@ -75,15 +83,15 @@ function frog(cx,cy){
   ellipse(cx + rfb/2 - 5,cy - 50, rfb/2 + 30, 40); //right foot
 
   ellipse(cx - rfb/2 + 10,cy - 120, rfb/2, 170);   //left leg
-  ellipse(cx - rfb/2 + 5,cy - 50, rfb/2 + 30, 40); //left leg
+  ellipse(cx - rfb/2 + 5,cy - 50, rfb/2 + 30, 40); //left foot
 
   //front legs
   fill(89, rfc - 10, 39);
-  ellipse(cx + rfb/2 - 10,cy - 120, rfb/2, 120);   //right leg
-  ellipse(cx + rfb/2 - 5,cy - 50, rfb/2 + 10, 40); //right foot
+  ellipse(cx + rfb/2 - 10,cy - 120, rfb/3, 170);   //right leg
+  ellipse(cx + rfb/2,cy - 30, rfb/3, 30); //right foot
 
-  ellipse(cx - rfb/2 + 10,cy - 120, rfb/2, 120);   //left leg
-  ellipse(cx - rfb/2 + 5,cy - 50, rfb/2 + 10, 40); //left leg
+  ellipse(cx - rfb/2 + 10,cy - 120, rfb/3, 170);   //left leg
+  ellipse(cx - rfb/2,cy - 30, rfb/3, 30); //left foot
 
   //belly
   fill(89, rfc, 39);
@@ -173,4 +181,32 @@ function morphDraw(pX,pY){
   beginShape();
   morph.forEach(v => { vertex(v.x, v.y);});
   endShape(CLOSE);
+}
+
+function moveEm(flies){
+  for(var i = 0; i < 5; i++){
+  flies[i].move();
+  }
+}
+// fly class
+function fly() {
+  this.x = random(10,wx);
+  this.y = random(10,hy);
+  this.diameter = random(20, 40);
+  this.speed = 4;
+
+  this.move = function() {
+    var speed = random(-this.speed, this.speed);
+    this.x += speed;
+    this.y += speed;
+  };
+
+  this.display = function() {
+    fill(0);
+    ellipse(this.x, this.y + 10, this.diameter - 10, this.diameter - 17);
+    fill(40,67);
+    ellipse(this.x, this.y, this.diameter, this.diameter - 5);
+    ellipse(this.x - 5, this.y, this.diameter, this.diameter - 5);
+
+  };
 }
