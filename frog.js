@@ -1,7 +1,7 @@
 var wx = 900;
 var hy = 600;
 var ny = 0.0;
-var rx, ry, rfb;
+var rx, ry, rfb, rfc;
 var circle = [];
 var square = [];
 var morph = [];
@@ -14,6 +14,7 @@ function setup() {
   rx = random(0,wx);
   ry = random(200,hy/2);
   rfb = random(190,290);
+  rfc = random (90,160);
   morphSetup();
 }
 
@@ -68,25 +69,29 @@ function lily(cx,cy){
 }
 
 function frog(cx,cy){
+  //right leg
+  fill(89, rfc, 39);
+  ellipse(cx + rfb/2 - 10,cy - 120,rfb/3, 170);
+  ellipse(cx - rfb/2 + 10,cy - 120,rfb/3, 170);
   //outer belly
-  fill(89, 127, 39);
+  //fill(89, rfc, 39);
   ellipse(cx, cy - 120, rfb, 220);
   //inner belly
   fill(135, 178, 78);
   ellipse(cx, cy - 110, rfb - 40, 180);
 
   //head
-  fill(89, 127, 39);
+  fill(89, rfc, 39);
   ellipse(cx, cy - 220, 170, 100);
 
   //left eye
-  fill(89, 127, 39);
+  fill(89, rfc, 39);
   ellipse(cx - 40, cy - 260, 60, 55); //lid
   fill(232, 231, 185);
   ellipse(cx - 55, cy - 260, 60, 55); //ball
 
   //right eye
-  fill(89, 127, 39);
+  fill(89, rfc, 39);
   ellipse(cx + 40, cy - 260, 60, 55); //lid
   fill(232, 231, 185);
   ellipse(cx + 55, cy - 260, 60, 55); //ball
@@ -105,6 +110,7 @@ function randomLilies(rx,ry){
   fill(97, 140, 85);
   ellipse(rx - 600, ry + 60, ry2 + 450,ry2);
 }
+
 // using code from p5 morph example: https://p5js.org/examples/motion-morph.html
 function morphSetup(){
   // Create a circle using vectors pointing from center
@@ -134,11 +140,8 @@ function morphDraw(pX,pY){
   for (var i = 0; i < circle.length; i++) {
     var v1;
     // Are we lerping to the circle or square?
-    if (state) {
-      v1 = circle[i];
-    } else {
-      v1 = square[i];
-    }
+    if (state) { v1 = circle[i];}
+    else { v1 = square[i];}
     // Get the vertex we will draw
     var v2 = morph[i];
     // Lerp to the target
