@@ -69,20 +69,31 @@ function lily(cx,cy){
 }
 
 function frog(cx,cy){
-  //right leg
+  //back legs
+  fill(89, rfc - 20, 39);
+  ellipse(cx + rfb/2 - 10,cy - 120, rfb/2, 170);   //right leg
+  ellipse(cx + rfb/2 - 5,cy - 50, rfb/2 + 30, 40); //right foot
+
+  ellipse(cx - rfb/2 + 10,cy - 120, rfb/2, 170);   //left leg
+  ellipse(cx - rfb/2 + 5,cy - 50, rfb/2 + 30, 40); //left leg
+
+  //front legs
+  fill(89, rfc - 10, 39);
+  ellipse(cx + rfb/2 - 10,cy - 120, rfb/2, 120);   //right leg
+  ellipse(cx + rfb/2 - 5,cy - 50, rfb/2 + 10, 40); //right foot
+
+  ellipse(cx - rfb/2 + 10,cy - 120, rfb/2, 120);   //left leg
+  ellipse(cx - rfb/2 + 5,cy - 50, rfb/2 + 10, 40); //left leg
+
+  //belly
   fill(89, rfc, 39);
-  ellipse(cx + rfb/2 - 10,cy - 120,rfb/3, 170);
-  ellipse(cx - rfb/2 + 10,cy - 120,rfb/3, 170);
-  //outer belly
-  //fill(89, rfc, 39);
-  ellipse(cx, cy - 120, rfb, 220);
-  //inner belly
+  ellipse(cx, cy - 120, rfb, 220);      //outer
   fill(135, 178, 78);
-  ellipse(cx, cy - 110, rfb - 40, 180);
+  ellipse(cx, cy - 110, rfb - 40, 180); //inner
 
   //head
   fill(89, rfc, 39);
-  ellipse(cx, cy - 220, 170, 100);
+  ellipse(cx, cy - 220, rfb - 50, 100);
 
   //left eye
   fill(89, rfc, 39);
