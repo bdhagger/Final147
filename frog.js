@@ -1,16 +1,14 @@
-var circle = [], square = [], morph = [], flies = [], x = [], y = [], angle = [];
+var circle = [], square = [], morph = [], flies = [], x = [], y = [], angle = [], powerEn = [];
 var rx, ry, rfc, rtl, targetX, targetY, numSegments, batEn;
 var wx = 900;
 var hy = 600;
 var ny = 0.0;
+var ln = 100;
 var segLength = 3;
 var state = false;
 var numFlies = 8;
-var powerEn = [];
 
-for(var i = 0; i < 8; i++){
-  powerEn[i] = i * 10;
-}
+for(var i = 0; i < 8; i++){ powerEn[i] = i * 10; }
 
 function setup() {
   createCanvas(wx,hy);
@@ -22,6 +20,7 @@ function setup() {
 
   morphSetup();
   for(var i = 0; i < numFlies; i++){ flies[i] = new fly();}
+
   numSegments = rtl;
 
   for (var i = 0; i < numSegments; i++) {
@@ -40,6 +39,7 @@ function draw(){
   }
   moveEm(flies);
   cam();
+
 }
 
 function cam(){
@@ -74,6 +74,14 @@ function cam(){
   fill(255);
   rect(wx - 125 + batEn,60,80 - batEn,20);
 
+  stroke(255, 70);
+  ln = ln - 1;
+  if (ln < 0) { ln = height + 100;}
+  line(0, ln, width, ln);
+  line(random(0, width), ln - 10, width, ln - 10);
+  line(0, ln - 100, random(0,width), ln - 100);
+  line(random(0, width), ln - 50, width, ln - 50);
+
   noStroke();
 }
 
@@ -93,12 +101,7 @@ function soil(){
   vertex(0, height);
   endShape(CLOSE);
 }
-function mouseClicked(){
-  if(numFlies > 0)
-    numFlies--;
-}
 
-//based on Noise wave example: https://p5js.org/examples/math-noise-wave.html
 function waterMovement(h1,h2){
   fill(159, 183, 221);
   beginShape();
@@ -150,6 +153,13 @@ function frog(cx,cy){
   fill(89, rfc, 39);
   ellipse(cx, cy - 220, ry - 50, 100);
 
+  //mouth
+  noFill();
+  stroke(0);
+  arc(cx, cy - 255, ry - 90, 70, 0, PI);  // upper half of circle
+  noStroke();
+
+
   //left eye
   fill(89, rfc, 39);
   ellipse(cx - ry/5, cy - 260, 60, 55); //lid
@@ -173,7 +183,8 @@ function frog(cx,cy){
   line(cx + ry/20, cy - 255, cx + ry/15, cy - 250);
 
   morphDraw(cx,cy - 120);
-  tongue();
+
+ if(mouseIsPressed) tongue();
 }
 
 function randomLilies(rx,ry){
@@ -267,7 +278,7 @@ function fly() {
 
 //borrows code from reach example: https://p5js.org/examples/interaction-reach-2.html
 function tongue(){
-  stroke(255,182,193);
+  stroke(255,182,ry);
   strokeWeight(10);
   reachSegment(0, mouseX - wx/2, mouseY - hy/2 + 70);
   for(var i=1; i<numSegments; i++) {
