@@ -178,12 +178,12 @@ function frog(cx,cy){
    //right blink
    if(dist(cx + ry/4, cy - 260, mouseX, mouseY) < 55){
      fill(89, rfc, 39);
-     ellipse(cx + ry/4, cy - 260, 60, 55); //ball
+     ellipse(cx + ry/4, cy - 259, 60, 57); //ball
    }
    //left blink
    if(dist(cx - ry/4, cy - 260, mouseX, mouseY) < 55){
      fill(89, rfc, 39);
-     ellipse(cx - ry/4, cy - 260, 60, 55); //ball
+     ellipse(cx - ry/4, cy - 259, 60, 57); //ball
    }
    tongue();
   }
