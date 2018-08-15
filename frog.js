@@ -203,13 +203,14 @@ function frog(cx,cy){
 function randomLilies(rx,ry){
   var ry2 = ry - 220;
   fill(127, 170, 115);
-  ellipse(rx, ry, ry2 + 350,ry2 + 10);
+  arc(rx, ry, ry2 + 350,ry2 + 10, PI, 3);
   fill(117, 160, 105);
-  ellipse(2*rx, ry + 30, ry2 + 300,ry2);
+  arc(2*rx, ry + 30, ry2 + 300,ry2, -PI, 3);
   fill(107, 150, 95);
-  ellipse(rx - 300, ry + 50, ry2 + 400,ry2 + 5);
+  arc(rx - 300, ry + 50, ry2 + 400,ry2 + 5, -PI, 3);
   fill(97, 140, 85);
-  ellipse(rx - 600, ry + 60, ry2 + 450,ry2);
+  arc(rx - 600, ry + 60, ry2 + 450,ry2, -PI, 3);  // upper half of circle
+
 }
 
 // using code from p5 morph example: https://p5js.org/examples/motion-morph.html
