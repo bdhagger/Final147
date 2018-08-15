@@ -1,12 +1,16 @@
 var circle = [], square = [], morph = [], flies = [], x = [], y = [], angle = [];
-var rx, ry, rfc, rtl, targetX, targetY, numSegments;
+var rx, ry, rfc, rtl, targetX, targetY, numSegments, batEn;
 var wx = 900;
 var hy = 600;
 var ny = 0.0;
 var segLength = 3;
 var state = false;
 var numFlies = 8;
+var powerEn = [];
 
+for(var i = 0; i < 8; i++){
+  powerEn[i] = i * 10;
+}
 
 function setup() {
   createCanvas(wx,hy);
@@ -14,6 +18,7 @@ function setup() {
   ry = random(200,hy/2);
   rfc = random(90,160);
   rtl = random(40,110);
+  batEn = random(powerEn);
 
   morphSetup();
   for(var i = 0; i < numFlies; i++){ flies[i] = new fly();}
@@ -34,6 +39,42 @@ function draw(){
     flies[i].display();
   }
   moveEm(flies);
+  cam();
+}
+
+function cam(){
+  textSize(22);
+  fill(255);
+  text('REC', 50, 70);
+
+  fill(255);
+  rect(30,30,10,100);
+  rect(40,30,100,10);
+
+  rect(wx - 40,30,10,100);
+  rect(wx - 130,30,100,10);
+
+  rect(wx - 40, hy - 120,10,100);
+  rect(wx - 130,hy - 30,100,10);
+
+  rect(30, hy - 120,10,100);
+  rect(40, hy - 30,100,10);
+
+  fill(244,0,0);
+  ellipse(115,62,20,20);
+
+  //battery
+  noFill();
+  stroke(255);
+  strokeWeight(2);
+  rect(wx - 125,60,80,20);
+  rect(wx - 130,65,5,10);
+
+  //power
+  fill(255);
+  rect(wx - 125 + batEn,60,80 - batEn,20);
+
+  noStroke();
 }
 
 //based on Noise wave example: https://p5js.org/examples/math-noise-wave.html
