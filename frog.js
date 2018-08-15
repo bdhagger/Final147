@@ -5,6 +5,7 @@ var hy = 600;
 var ny = 0.0;
 var segLength = 3;
 var state = false;
+var numFlies = 8;
 
 
 function setup() {
@@ -15,7 +16,7 @@ function setup() {
   rtl = random(40,110);
 
   morphSetup();
-  for(var i = 0; i < 5; i++){ flies[i] = new fly();}
+  for(var i = 0; i < numFlies; i++){ flies[i] = new fly();}
   numSegments = rtl;
 
   for (var i = 0; i < numSegments; i++) {
@@ -25,12 +26,13 @@ function setup() {
 
 function draw(){
   background(210, 226, 247);
-  noStroke();
   soil();
   waterMovement(100,200);
   randomLilies(rx,ry);
   lily(wx/2,hy/2 + 150);
-  for(var i = 0; i < 5; i++){ flies[i].display();}
+  for(var i = 0; i < numFlies; i++){
+    flies[i].display();
+  }
   moveEm(flies);
 }
 
@@ -49,6 +51,10 @@ function soil(){
   vertex(width, height);
   vertex(0, height);
   endShape(CLOSE);
+}
+function mouseClicked(){
+  if(numFlies > 0)
+    numFlies--;
 }
 
 //based on Noise wave example: https://p5js.org/examples/math-noise-wave.html
@@ -188,15 +194,17 @@ function morphDraw(pX,pY){
 }
 
 function moveEm(flies){
-  for(var i = 0; i < 5; i++){
-  flies[i].move();
+  for(var i = 0; i < numFlies; i++){
+    flies[i].move();
   }
 }
+
+
 // fly class
 function fly() {
   this.x = random(10,wx);
   this.y = random(10,hy);
-  this.diameter = random(20, 40);
+  this.diameter = random(20, 35);
 
   this.move = function() {
     var speed = random(-4,4);
@@ -205,12 +213,14 @@ function fly() {
   };
 
   this.display = function() {
+    //body
     fill(0);
-    ellipse(this.x, this.y + 10, this.diameter - 10, this.diameter - 17);
+    ellipse(this.x, this.y + 7, this.diameter - 10, this.diameter - 15);
+
+    //wings
     fill(40,67);
     ellipse(this.x, this.y, this.diameter, this.diameter - 5);
     ellipse(this.x - 5, this.y, this.diameter, this.diameter - 5);
-
   };
 }
 
