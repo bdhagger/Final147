@@ -78,8 +78,6 @@ function cam(){
   line(random(0, width), ln - 10, width, ln - 10);
   line(0, ln - 100, random(0,width), ln - 100);
   line(random(0, width), ln - 50, width, ln - 50);
-
-//  noStroke();
 }
 
 //based on Noise wave example: https://p5js.org/examples/math-noise-wave.html
