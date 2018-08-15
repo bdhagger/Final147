@@ -1,31 +1,26 @@
+var circle = [], square = [], morph = [], flies = [], x = [], y = [], angle = [];
+var rx, ry, rfc, rtl, targetX, targetY, numSegments;
 var wx = 900;
 var hy = 600;
 var ny = 0.0;
-var rx, ry, rfb, rfc;
-var circle = [], square = [], morph = [];
-var state = false;
-var flies = [];
-
-var x = [], y = [], angle = [];
 var segLength = 3;
-var targetX, targetY;
-var numSegments = 106;
+var state = false;
 
-for (var i = 0; i < numSegments; i++) {
-  x[i] = y[i] = angle[i] = 0;
-}
 
 function setup() {
   createCanvas(wx,hy);
   rx = random(0,wx);
   ry = random(200,hy/2);
-  rfb = random(190,290);
   rfc = random(90,160);
+  rtl = random(40,110);
+
   morphSetup();
   for(var i = 0; i < 5; i++){ flies[i] = new fly();}
-  //tongue placement
-  x[x.length-1] = width/2; // Set base x-coordinate
-  y[x.length-1] = height/2 - 75;  // Set base y-coordinate
+  numSegments = rtl;
+
+  for (var i = 0; i < numSegments; i++) {
+    x[i] = y[i] = angle[i] = 0;
+  }
 }
 
 function draw(){
@@ -37,8 +32,6 @@ function draw(){
   lily(wx/2,hy/2 + 150);
   for(var i = 0; i < 5; i++){ flies[i].display();}
   moveEm(flies);
-  tongue();
-
 }
 
 //based on Noise wave example: https://p5js.org/examples/math-noise-wave.html
@@ -86,51 +79,51 @@ function lily(cx,cy){
 function frog(cx,cy){
   //back legs
   fill(89, rfc - 20, 39);
-  ellipse(cx + rfb/2 - 10,cy - 120, rfb/2, 170);   //right leg
-  ellipse(cx + rfb/2 - 5,cy - 50, rfb/2 + 30, 40); //right foot
+  ellipse(cx + ry/2 - 10,cy - 120, ry/2, 170);   //right leg
+  ellipse(cx + ry/2 - 5,cy - 50, ry/2 + 30, 40); //right foot
 
-  ellipse(cx - rfb/2 + 10,cy - 120, rfb/2, 170);   //left leg
-  ellipse(cx - rfb/2 + 5,cy - 50, rfb/2 + 30, 40); //left foot
+  ellipse(cx - ry/2 + 10,cy - 120, ry/2, 170);   //left leg
+  ellipse(cx - ry/2 + 5,cy - 50, ry/2 + 30, 40); //left foot
 
   //front legs
   fill(89, rfc - 10, 39);
-  ellipse(cx + rfb/2 - 10,cy - 120, rfb/3, 170);   //right leg
-  ellipse(cx + rfb/2,cy - 30, rfb/3, 30); //right foot
+  ellipse(cx + ry/2 - 10,cy - 120, ry/3, 170);   //right leg
+  ellipse(cx + ry/2,cy - 30, ry/3, 30); //right foot
 
-  ellipse(cx - rfb/2 + 10,cy - 120, rfb/3, 170);   //left leg
-  ellipse(cx - rfb/2,cy - 30, rfb/3, 30); //left foot
+  ellipse(cx - ry/2 + 10,cy - 120, ry/3, 170);   //left leg
+  ellipse(cx - ry/2,cy - 30, ry/3, 30); //left foot
 
   //belly
   fill(89, rfc, 39);
-  ellipse(cx, cy - 120, rfb, 220);      //outer
+  ellipse(cx, cy - 120, ry, 220);      //outer
   fill(135, 178, 78);
-  ellipse(cx, cy - 110, rfb - 40, 180); //inner
+  ellipse(cx, cy - 110, ry - 40, 180); //inner
 
   //head
   fill(89, rfc, 39);
-  ellipse(cx, cy - 220, rfb - 50, 100);
+  ellipse(cx, cy - 220, ry - 50, 100);
 
   //left eye
   fill(89, rfc, 39);
-  ellipse(cx - rfb/5, cy - 260, 60, 55); //lid
+  ellipse(cx - ry/5, cy - 260, 60, 55); //lid
   fill(ry, ry, ry - 100);
-  ellipse(cx - rfb/4, cy - 260, 60, 55); //ball
+  ellipse(cx - ry/4, cy - 260, 60, 55); //ball
   fill(0);
-  ellipse(cx - rfb/4 - 10, cy - 260, rfb/8, rfb/6); //pupil
+  ellipse(cx - ry/4 - 10, cy - 260, ry/8, ry/6); //pupil
 
   //right eye
   fill(89, rfc, 39);
-  ellipse(cx + rfb/5, cy - 260, 60, 55); //lid
+  ellipse(cx + ry/5, cy - 260, 60, 55); //lid
   fill(ry, ry, ry - 100);
-  ellipse(cx + rfb/4, cy - 260, 60, 55); //ball
+  ellipse(cx + ry/4, cy - 260, 60, 55); //ball
   fill(0);
-  ellipse(cx + rfb/4 + 10, cy - 260, rfb/8, rfb/6); //pupil
+  ellipse(cx + ry/4 + 10, cy - 260, ry/8, ry/6); //pupil
 
   //nostrils
   stroke(69, rfc - 50, 19);
   strokeWeight(2);
-  line(cx - rfb/20, cy - 255, cx - rfb/15, cy - 250);
-  line(cx + rfb/20, cy - 255, cx + rfb/15, cy - 250);
+  line(cx - ry/20, cy - 255, cx - ry/15, cy - 250);
+  line(cx + ry/20, cy - 255, cx + ry/15, cy - 250);
 
   morphDraw(cx,cy - 120);
   tongue();
@@ -225,7 +218,7 @@ function fly() {
 function tongue(){
   stroke(255,182,193);
   strokeWeight(10);
-  reachSegment(0, mouseX, mouseY);
+  reachSegment(0, mouseX - wx/2, mouseY - hy/2 + 70);
   for(var i=1; i<numSegments; i++) {
     reachSegment(i, targetX, targetY);
   }
@@ -253,7 +246,7 @@ function reachSegment(i, xin, yin) {
 
 function segment(x, y, a) {
   push();
-  translate(x, y);
+  translate(x + wx/2, y + hy/2 - 70);
   line(0, 0, segLength, 0);
   pop();
 }
