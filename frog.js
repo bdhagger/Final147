@@ -21,12 +21,8 @@ function setup() {
 
   morphSetup();
   for(var i = 0; i < numFlies; i++){ flies[i] = new fly();}
-
   numSegments = rtl;
-
-  for (var i = 0; i < numSegments; i++) {
-    x[i] = y[i] = angle[i] = 0;
-  }
+  for (var i = 0; i < numSegments; i++) { x[i] = y[i] = angle[i] = 0;}
 }
 
 function draw(){
@@ -35,12 +31,9 @@ function draw(){
   waterMovement(100,200);
   randomLilies(rx,ry);
   lily(wx/2,hy/2 + 150);
-  for(var i = 0; i < numFlies; i++){
-    flies[i].display();
-  }
+  for(var i = 0; i < numFlies; i++){ flies[i].display();}
   moveEm(flies);
   cam();
-
 }
 
 function cam(){
@@ -76,6 +69,8 @@ function cam(){
   rect(wx - 125 + batEn,60,80 - batEn,20);
 
   stroke(255, 70);
+  strokeWeight(5);
+
   ln = ln - 1;
   if (ln < 0) { ln = height + 100;}
   line(0, ln, width, ln);
@@ -118,13 +113,6 @@ function waterMovement(h1,h2){
   vertex(width, height);
   vertex(0, height);
   endShape(CLOSE);
-}
-
-function lily(cx,cy){
-  fill(127, 160, 115);
-  ellipse(cx, cy, 600,150);
-  waterMovement(cy, cy + 100);
-  frog(cx,cy);
 }
 
 function frog(cx,cy){
@@ -197,7 +185,13 @@ function frog(cx,cy){
    }
    tongue();
   }
+}
 
+function lily(cx,cy){
+  fill(127, 160, 115);
+  ellipse(cx, cy, 600,150);
+  waterMovement(cy, cy + 100);
+  frog(cx,cy);
 }
 
 function randomLilies(rx,ry){
@@ -209,19 +203,18 @@ function randomLilies(rx,ry){
   fill(107, 150, 95);
   arc(rx - 300, ry + 50, ry2 + 400,ry2 + 5, -PI, 3);
   fill(97, 140, 85);
-  arc(rx - 600, ry + 60, ry2 + 450,ry2, -PI, 3);  // upper half of circle
+  arc(rx - 600, ry + 60, ry2 + 450,ry2, -PI, 3);
 
 }
 
-// using code from p5 morph example: https://p5js.org/examples/motion-morph.html
+// borrows code from p5 morph example: https://p5js.org/examples/motion-morph.html
 function morphSetup(){
   // Create a circle using vectors pointing from center
   for (var angle = 0; angle < 360; angle += 9) {
     var v = p5.Vector.fromAngle(radians(angle - 135));
     v.mult(100);
     circle.push(v);
-    // fill out morph ArrayList with blank PVectors
-    morph.push(createVector());
+    morph.push(createVector());  // fill out morph ArrayList with blank PVectors
   }
   // Top of square
   for (var x = -50; x < 50; x += 10) { square.push(createVector(x, -50));}
@@ -236,9 +229,7 @@ function morphSetup(){
 function morphDraw(pX,pY){
   fill(135, 178, 78);
   noStroke();
-  // We will keep how far the vertices are from their target
-  var totalDistance = 0;
-
+  var totalDistance = 0;   //keep how far the vertices are from their target
   // Look at each vertex
   for (var i = 0; i < circle.length; i++) {
     var v1;
@@ -258,13 +249,6 @@ function morphDraw(pX,pY){
   endShape(CLOSE);
   translate(-pX,-pY);
 }
-
-function moveEm(flies){
-  for(var i = 0; i < numFlies; i++){
-    flies[i].move();
-  }
-}
-
 
 // fly class
 function fly() {
@@ -289,21 +273,20 @@ function fly() {
     ellipse(this.x - 5, this.y, this.diameter, this.diameter - 5);
   };
 }
+function moveEm(flies){
+  for(var i = 0; i < numFlies; i++){
+    flies[i].move();
+  }
+}
 
 //borrows code from reach example: https://p5js.org/examples/interaction-reach-2.html
 function tongue(){
-  stroke(255,182,ry);
+  stroke(ry,ry - 40,ry - 10);
   strokeWeight(10);
   reachSegment(0, mouseX - wx/2, mouseY - hy/2 + 70);
-  for(var i=1; i<numSegments; i++) {
-    reachSegment(i, targetX, targetY);
-  }
-  for(var j=x.length-1; j>=1; j--) {
-    positionSegment(j, j-1);
-  }
-  for(var k=0; k<x.length; k++) {
-    segment(x[k], y[k], angle[k]);
-  }
+  for(var i=1; i<numSegments; i++) { reachSegment(i, targetX, targetY);}
+  for(var j=x.length-1; j>=1; j--) { positionSegment(j, j-1);}
+  for(var k=0; k<x.length; k++) { segment(x[k], y[k], angle[k]);}
   noStroke();
 }
 
