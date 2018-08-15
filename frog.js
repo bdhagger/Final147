@@ -79,7 +79,7 @@ function cam(){
   line(0, ln - 100, random(0,width), ln - 100);
   line(random(0, width), ln - 50, width, ln - 50);
 
-  noStroke();
+//  noStroke();
 }
 
 //based on Noise wave example: https://p5js.org/examples/math-noise-wave.html
@@ -146,6 +146,7 @@ function frog(cx,cy){
   //mouth
   noFill();
   stroke(0);
+  if(mouseIsPressed) strokeWeight(6);
   arc(cx, cy - 255, ry - 90, 70, 0, PI);  // upper half of circle
   noStroke();
 
@@ -153,7 +154,7 @@ function frog(cx,cy){
   fill(89, rfc, 39);
   ellipse(cx - ry/5, cy - 260, 60, 55); //lid
   fill(ry, ry, ry - 100);
-  ellipse(cx - ry/4, cy - 260, 60, 55); //ball
+  ellipse(cx - ry/4, cy - 258, 60, 55); //ball
   fill(0);
   ellipse(cx - ry/4 - 10, cy - 260, ry/8, ry/6); //pupil
 
@@ -161,7 +162,7 @@ function frog(cx,cy){
   fill(89, rfc, 39);
   ellipse(cx + ry/5, cy - 260, 60, 55); //lid
   fill(ry, ry, ry - 100);
-  ellipse(cx + ry/4, cy - 260, 60, 55); //ball
+  ellipse(cx + ry/4, cy - 258, 60, 55); //ball
   fill(0);
   ellipse(cx + ry/4 + 10, cy - 260, ry/8, ry/6); //pupil
 
