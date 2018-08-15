@@ -69,8 +69,6 @@ function cam(){
   rect(wx - 125 + batEn,60,80 - batEn,20);
 
   stroke(255, 70);
-  strokeWeight(5);
-
   ln = ln - 1;
   if (ln < 0) { ln = height + 100;}
   line(0, ln, width, ln);
@@ -281,7 +279,7 @@ function moveEm(flies){
 
 //borrows code from reach example: https://p5js.org/examples/interaction-reach-2.html
 function tongue(){
-  stroke(ry,ry - 40,ry - 10);
+  stroke(ry,160,ry - 10);
   strokeWeight(10);
   reachSegment(0, mouseX - wx/2, mouseY - hy/2 + 70);
   for(var i=1; i<numSegments; i++) { reachSegment(i, targetX, targetY);}
