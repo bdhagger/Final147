@@ -29,12 +29,10 @@ function draw(){
   background(210, 226, 247);
   noStroke(0);
   soil();
-  //stroke(0);
   waterMovement(100,200, 159, 171, 181);
   waterMovement(300,200, 159, 175, 201);
   randomLilies(rx,ry);
   waterMovement(300,400, 159, 179, 221);
-  noStroke();
   lily(wx/2,hy/2 + 150);
   for(var i = 0; i < numFlies; i++){ flies[i].display();}
   moveEm(flies);
