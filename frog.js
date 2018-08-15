@@ -6,6 +6,7 @@ var ny = 0.0;
 var ln = 100;
 var segLength = 3;
 var state = false;
+var open = true;
 var numFlies = 8;
 
 for(var i = 0; i < 8; i++){ powerEn[i] = i * 10; }
@@ -159,7 +160,6 @@ function frog(cx,cy){
   arc(cx, cy - 255, ry - 90, 70, 0, PI);  // upper half of circle
   noStroke();
 
-
   //left eye
   fill(89, rfc, 39);
   ellipse(cx - ry/5, cy - 260, 60, 55); //lid
@@ -184,7 +184,20 @@ function frog(cx,cy){
 
   morphDraw(cx,cy - 120);
 
- if(mouseIsPressed) tongue();
+ if(mouseIsPressed){
+   //right blink
+   if(dist(cx + ry/4, cy - 260, mouseX, mouseY) < 55){
+     fill(89, rfc, 39);
+     ellipse(cx + ry/4, cy - 260, 60, 55); //ball
+   }
+   //left blink
+   if(dist(cx - ry/4, cy - 260, mouseX, mouseY) < 55){
+     fill(89, rfc, 39);
+     ellipse(cx - ry/4, cy - 260, 60, 55); //ball
+   }
+   tongue();
+  }
+
 }
 
 function randomLilies(rx,ry){
