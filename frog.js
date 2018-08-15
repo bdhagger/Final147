@@ -27,9 +27,14 @@ function setup() {
 
 function draw(){
   background(210, 226, 247);
+  noStroke(0);
   soil();
-  waterMovement(100,200);
+  //stroke(0);
+  waterMovement(100,200, 159, 171, 181);
+  waterMovement(300,200, 159, 175, 201);
   randomLilies(rx,ry);
+  waterMovement(300,400, 159, 179, 221);
+  noStroke();
   lily(wx/2,hy/2 + 150);
   for(var i = 0; i < numFlies; i++){ flies[i].display();}
   moveEm(flies);
@@ -96,8 +101,8 @@ function soil(){
   endShape(CLOSE);
 }
 
-function waterMovement(h1,h2){
-  fill(159, 183, 221);
+function waterMovement(h1,h2, r, g, b){
+  fill(r,g,b);
   beginShape();
   var nx = 0;
   // Iterate over horizontal pixels
@@ -188,7 +193,7 @@ function frog(cx,cy){
 function lily(cx,cy){
   fill(127, 160, 115);
   ellipse(cx, cy, 600,150);
-  waterMovement(cy, cy + 100);
+  waterMovement(cy, cy + 100, 159, 183, 231);
   frog(cx,cy);
 }
 
